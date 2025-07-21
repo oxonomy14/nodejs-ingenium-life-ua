@@ -1,0 +1,80 @@
+tags:
+  - Contacts
+summary: Update contact by ID
+operationId: updateContactById
+description: Partially update a contact's information by unique ID
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: contactId
+    required: true
+    description: ID of the contact to update
+    schema:
+      type: string
+      example: 6868df2be3a8fce7de0049a1
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: Iryna
+          phoneNumber:
+            type: string
+            example: '380952720920'
+          email:
+            type: string
+            example: iryna@ukr.net
+          contactType:
+            type: string
+            enum: [work, home, personal]
+            example: home
+          isFavourite:
+            type: boolean
+            example: false
+          photo:
+            type: string
+            format: binary
+            description: New contact photo file
+responses:
+  '200':
+    description: Contact updated successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Contact updated successfully!
+            data:
+              $ref: '../../../components/schemas/contact.yaml'
+  '401':
+    $ref: '../../../components/responses/401.yaml'
+  '404':
+    description: Contact not found
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: Contact not found
