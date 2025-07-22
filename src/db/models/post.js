@@ -10,6 +10,10 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
+     keyWordImgSrcPostTop: {
+      type: String,
+      required: true,
+        },
     title: {
       type: String,
       required: true,
