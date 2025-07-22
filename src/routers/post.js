@@ -7,6 +7,7 @@ import { createPostSchema } from '../validation/post.js';
 //import { updateContactSchema } from '../validation/contacts.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { upload } from '../middlewares/multer.js';
+import { PostCollection } from '../db/models/post.js';
 
 
 const router = Router();
@@ -24,6 +25,29 @@ router.post(
 );
 
 router.get('/:postId', isValidId(), ctrlWrapper(getPostByIdController));
+
+router.post('/:postId/increment-views', async (req, res) => {
+  try {
+    const updatedPost = await PostCollection.findByIdAndUpdate(
+      req.params.postId,
+      { $inc: { views: 1 } },  // інкремент views на 1
+      { new: true }
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    res.json({
+      status: 200,
+      message: 'Views incremented',
+      data: updatedPost,
+    });
+  } catch (error) {
+    console.error('Error incrementing views:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 // router.use(authenticate);
 
