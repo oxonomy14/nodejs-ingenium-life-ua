@@ -1,11 +1,12 @@
 //import createHttpError from 'http-errors';
-import { getAllPost, createPost } from '../services/post.js';
+import { getAllPost, createPost, getPostById } from '../services/post.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
+import { PostCollection } from '../db/models/post.js';
 
 
 
@@ -82,4 +83,22 @@ export const createPostController = async (req, res) => {
 };
 
 
+export const getPostByIdController = async (req, res) => {
+  const { postId } = req.params;
+
+  const post = await getPostById(
+    postId,
+    { $inc: { views: 1 } }, // інкрементуємо views на 1
+    { new: true } // повертаємо оновлений документ
+  );
+
+  if (!post) {
+    return res.status(404).json({ message: 'Post not found' });
+  }
+
+  res.json({
+    status: 200,
+    data: post,
+  });
+};
 

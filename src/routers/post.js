@@ -1,4 +1,4 @@
-import { getAllPostController, createPostController } from '../controllers/post.js';
+import { getAllPostController, createPostController, getPostByIdController } from '../controllers/post.js';
 import { Router } from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';
@@ -7,6 +7,7 @@ import { createPostSchema } from '../validation/post.js';
 //import { updateContactSchema } from '../validation/contacts.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { upload } from '../middlewares/multer.js';
+
 
 const router = Router();
 
@@ -21,6 +22,8 @@ router.post(
   validateBody(createPostSchema), // тепер правильний порядок
   ctrlWrapper(createPostController)
 );
+
+router.get('/:postId', isValidId(), ctrlWrapper(getPostByIdController));
 
 // router.use(authenticate);
 

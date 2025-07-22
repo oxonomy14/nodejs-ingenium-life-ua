@@ -54,7 +54,10 @@ const postSchema = new Schema(
       enum: ['orange', 'green', 'red', 'purple', 'blue', 'light_blue'],
       default: 'light_blue'
     },  
-    
+     views: {
+    type: Number,
+    default: 0,
+  },
   },
   {
     timestamps: true,

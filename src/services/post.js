@@ -47,3 +47,6 @@ export const createPost = async (payload) => {
   return post;
 };
 
+export const getPostById = async (id, update = {}, options = {}) => {
+  return PostCollection.findByIdAndUpdate(id, update, options);
+};
