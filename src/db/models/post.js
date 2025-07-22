@@ -5,7 +5,11 @@ const postSchema = new Schema(
     imgSrc: {
       type: String,
       required: true,
-        },
+    },
+    imgSrcPostTop: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,

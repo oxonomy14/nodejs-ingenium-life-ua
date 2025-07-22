@@ -11,7 +11,10 @@ import { upload } from '../middlewares/multer.js';
 const router = Router();
 
 router.get('/', ctrlWrapper(getAllPostController));
-router.post('/', upload.single('imgSrc'), validateBody(createPostSchema), ctrlWrapper(createPostController));  
+router.post('/', upload.fields([
+    { name: 'imgSrc', maxCount: 1 },
+    { name: 'imgSrcPostTop', maxCount: 1 },
+  ]), validateBody(createPostSchema), ctrlWrapper(createPostController));  
 
 // router.use(authenticate);
 

@@ -36,14 +36,15 @@ export const getAllPostController = async (req, res, next) => {
 };
   
 
-
-
-
 export const createPostController = async (req, res) => {
-  //const userId = req.user._id;
-  const imgSrc = req.file;
+    //const userId = req.user._id;
+  const files = req.files;
 
-  let imgUrl;
+  const imgSrc = files?.imgSrc?.[0];
+  const imgSrcPostTop = files?.imgSrcPostTop?.[0];
+
+  let imgUrl, imgUrlPostTop;
+
   if (imgSrc) {
     if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
       imgUrl = await saveFileToCloudinary(imgSrc);
@@ -52,15 +53,26 @@ export const createPostController = async (req, res) => {
     }
   }
 
-    const post = await createPost({
-        ...req.body,
-        //userId,
-        imgSrc: imgUrl,
-    });
-    res.status(201).json({
-        message: 'Successfully created a post',
-        status: 201,
-        data: post,
-    });
+  if (imgSrcPostTop) {
+    if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+      imgUrlPostTop = await saveFileToCloudinary(imgSrcPostTop);
+    } else {
+      imgUrlPostTop = await saveFileToUploadDir(imgSrcPostTop);
+    }
+  }
+
+  const post = await createPost({
+    ...req.body,
+    imgSrc: imgUrl,
+    imgSrcPostTop: imgUrlPostTop,
+  });
+
+  res.status(201).json({
+    message: 'Successfully created a post',
+    status: 201,
+    data: post,
+  });
 };
+
+
 

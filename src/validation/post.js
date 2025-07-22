@@ -15,8 +15,7 @@ export const createPostSchema = Joi.object({
     author: Joi.string().min(5).max(50).required(),
     date: Joi.date().required(),
     color: Joi.string().valid('orange', 'green', 'red', 'purple', 'blue', 'light_blue').required(),
-    category: Joi.string().valid('астрология', 'таро', 'психоанализ').required(),
- 
+    category: Joi.string().valid('астрология', 'таро', 'психоанализ').required(), 
 
 });
 
