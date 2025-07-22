@@ -67,6 +67,13 @@ export const createPostController = async (req, res) => {
     imgSrcPostTop: imgUrlPostTop,
   });
 
+  if (!imgSrc || !imgSrcPostTop) {
+  return res.status(400).json({
+    message: "Images 'imgSrc' and 'imgSrcPostTop' are required",
+    status: 400,
+  });
+}
+
   res.status(201).json({
     message: 'Successfully created a post',
     status: 201,
